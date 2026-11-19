@@ -69,3 +69,23 @@ for (const button of serviceButtons) {
 serviceTrack.addEventListener('scroll', updateServiceControls, { passive: true });
 window.addEventListener('resize', updateServiceControls);
 updateServiceControls();
+
+// Repeat each column once for a continuous loop.
+const reviewWall = document.querySelector('.review-wall');
+const reviewCards = [...reviewWall.children];
+const reviewColumns = matchMedia('(max-width: 600px)').matches ? 1 : 2;
+for (let columnIndex = 0; columnIndex < reviewColumns; columnIndex++) {
+  const column = document.createElement('div');
+  column.className = 'review-column';
+  const track = document.createElement('div');
+  track.className = 'review-track';
+  const cards = reviewCards.filter((_, index) => index % reviewColumns === columnIndex);
+  for (const card of cards) track.append(card);
+  for (const card of cards) {
+    const duplicate = card.cloneNode(true);
+    duplicate.setAttribute('aria-hidden', 'true');
+    track.append(duplicate);
+  }
+  column.append(track);
+  reviewWall.append(column);
+}
