@@ -47,29 +47,6 @@ nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
-const serviceTrack = document.querySelector('#service-grid');
-const serviceButtons = document.querySelectorAll('.service-controls button');
-function updateServiceControls() {
-  for (const button of serviceButtons) {
-    const atStart = serviceTrack.scrollLeft <= 2;
-    const atEnd = serviceTrack.scrollLeft + serviceTrack.clientWidth >= serviceTrack.scrollWidth - 2;
-    button.disabled = Number(button.dataset.step) < 0 ? atStart : atEnd;
-  }
-}
-for (const button of serviceButtons) {
-  button.addEventListener('click', () => {
-    const card = serviceTrack.firstElementChild;
-    const distance = card.getBoundingClientRect().width + parseFloat(getComputedStyle(serviceTrack).gap);
-    serviceTrack.scrollBy({
-      left: distance * Number(button.dataset.step),
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
-    });
-  });
-}
-serviceTrack.addEventListener('scroll', updateServiceControls, { passive: true });
-window.addEventListener('resize', updateServiceControls);
-updateServiceControls();
-
 // Repeat each column once for a continuous loop.
 const reviewWall = document.querySelector('.review-wall');
 const reviewCards = [...reviewWall.children];
